@@ -211,3 +211,149 @@ function clearjQueryCache() {
         delete jQuery.cache[x];
     }
 }
+function mostrarImagen(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('.my-img').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+$('#chng-fa-clo').click(function () {
+    $('.my-img').attr('src', prevsrc);
+    $("#chng-fa-clo").css('display', 'none');
+    $("#chng-fa-sav").css('display', 'none');
+});
+
+$("#chang-img").on("change", function () {
+    mostrarImagen(this);
+    $("#chng-fa-clo").css('display', 'block');
+    $("#chng-fa-sav").css('display', 'block');
+});
+$('#chng-fa-cam').click(function () {
+    $("#chang-img").click();
+});
+
+$('.main-sidebar').on('click', '.addmenu', function () {
+    window.location = $(this).attr('href');
+})
+$('#chng-fa-sav').click(function () {
+    var formData = new FormData($("#chng-form")[0]);
+    var ruta = "./imgprofile";
+    $("#chng-fa-sav").removeClass('fa-save');
+    $("#chng-fa-sav").addClass('fa-spinner');
+    $("#chng-fa-sav").attr('data-original-title', 'Cargando..');
+    $.ajax({
+        url: ruta,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (datos) {
+            console.log(datos);
+            if (!datos) {
+                $('.my-img').attr('src', prevsrc);
+            }
+            $("#chng-fa-sav").removeClass('fa-spinner');
+            $("#chng-fa-sav").addClass('fa-save');
+            $("#chng-fa-sav").attr('data-original-title', 'Guardar Imagen"');
+            $("#chng-fa-clo").css('display', 'none');
+            $("#chng-fa-sav").css('display', 'none');
+        }
+    });
+});
+$(function () {
+    $(".select2").select2();
+    $(".select2-container").css('width', '100%');
+
+    $('.slimscroll').slimScroll();
+    $('.scroll').slimScroll({
+        height: 40
+    });
+    $('[name="alias"]').keyup(function (key) {
+        if (key.keyCode == 32) {
+            $(this).val($(this).val().replace(' ', '-'));
+        }
+    });
+    $('[name="alias"]').keypress(function (key) {
+        if ((key.charCode < 97 || key.charCode > 122)//letras mayusculas
+            && (key.charCode < 65 || key.charCode > 90) //letras minusculas
+            && (key.charCode != 32) //espacio
+            && (key.charCode != 45) //guion 
+        )
+            return false;
+    });
+    //Initialize Select2 Elements
+    // //Datemask dd/mm/yyyy
+    // $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+    // //Datemask2 mm/dd/yyyy
+    // $(".form-control").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+    // //Money Euro
+    $("[data-inputmask]").inputmask("dd/mm/yyyy", { placeholder: "dd/mm/aaaa" });
+    $("[data-inputtime]").inputmask("h:s t", { placeholder: "hh:mm -m" });
+    $("[data-inputdatetime]").inputmask("datetime12", { placeholder: "dd/mm/aaaa hh:mm xm" });
+    $("[data-mask]").inputmask();
+    // $('[data-toggle="tooltip"]').tooltip();
+    $('[intlTelInput]').intlTelInput({
+        //allowExtensions: true,
+        //            autoFormat: true,
+        //autoHideDialCode: false,
+        //            autoPlaceholder: true,
+        //defaultCountry: "auto",
+        //                    ipinfoToken: "yolo",
+        nationalMode: false,
+        numberType: "MOBILE",
+        //onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+        preferredCountries: ['ve'],
+        utilsScript: "<?= $this->url ?>/plugins/intlTelInput/libphonenumber/build/utils.js"
+    });
+    $('[title]').tooltip();
+
+    $(".fancybox").fancybox(
+        {
+            maxWidth: '85%',
+            maxHeight: '85%',
+            fitToView: false,
+            width: '85%',
+            height: '85%',
+            autoSize: false,
+            closeClick: false,
+            openEffect: 'none',
+            closeEffect: 'none'
+        }
+    );
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue'
+    });
+    $('.callout-close').click(function () {
+        $('.callout-content').slideUp();
+    });
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    // CKEDITOR.replace('editor1');
+    //bootstrap WYSIHTML5 - text editor
+    $("textarea").addClass('textarea');
+    $("#answer").removeClass('textarea');
+    // $("textarea").addClass('');
+    // $(".textarea").wysihtml5();
+
+    $("[colorpicker]").colorpicker();
+
+    $('[timepicker]').timepicker();
+    // $("textarea").summernote({
+    // height: 150,   //set editable area's height
+    // codemirror: { // codemirror options
+    // theme: 'monokai'
+    // }
+    // });
+
+    $("textarea").froalaEditor({
+        // Set the language code.
+        language: 'es',
+        height: 100,
+    })
+
+});
