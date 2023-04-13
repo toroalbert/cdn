@@ -350,10 +350,10 @@ $(function() {
     $("#answer").removeClass('textarea');
     $("[colorpicker]").colorpicker();
     $('[timepicker]').timepicker();
-    $("textarea").froalaEditor({
-        language: 'es',
-        height: 100,
-    })
+    // $("textarea").froalaEditor({
+    //     language: 'es',
+    //     height: 100,
+    // })
 });
 $('body').on('click', '.comments-press', function() {
     $('.comments-' + $(this).attr('comments')).addClass('comments-show');
